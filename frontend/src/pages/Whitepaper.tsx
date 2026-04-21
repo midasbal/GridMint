@@ -935,7 +935,7 @@ export default function Whitepaper() {
               <Bullet>Carbon credit derivatives market layered on green certificates</Bullet>
             </ul>
             <p style={{ marginTop: 24, fontStyle: 'italic', color: 'rgba(230,238,246,0.5)' }}>
-              GridMint is open-source under MIT license. Built for the Circle x Arc Hackathon 2026.
+              GridMint is open-source under MIT license. Agentic Economy on Arc.
             </p>
           </Section>
 
@@ -955,7 +955,7 @@ export default function Whitepaper() {
             }}
           >
             <div style={{ marginBottom: 12 }}>
-              Built for the Circle x Arc Hackathon 2026
+              Agentic Economy on Arc
             </div>
             <div>
               Powered by <span style={{ color: '#6EE7F3' }}>Circle Nanopayments</span> • <span style={{ color: '#9B8CFF' }}>Arc Testnet</span> • <span style={{ color: '#4ade80' }}>Google Gemini</span>
