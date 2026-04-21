@@ -11,10 +11,6 @@ web3==7.3.0
 eth-account>=0.13.1
 python-dotenv==1.0.1
 
-# Dashboard
-streamlit==1.38.0
-plotly==5.24.0
-
 # Simulation
 numpy==2.1.0
 
