@@ -339,8 +339,8 @@ All scenarios triggerable via Gemini Function Calling: *"Trigger a solar crash a
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/gridmint.git
-cd gridmint
+git clone https://github.com/midasbal/GridMint.git
+cd GridMint
 
 # Set up environment variables
 cp .env.example .env

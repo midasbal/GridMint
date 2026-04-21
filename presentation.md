@@ -158,7 +158,7 @@ Arc:       ▎ $0.0011  ← GridMint measured cost
 - Green checkmarks for all compliance items
 - Dramatic bar chart showing Ethereum vs Arc costs
 - Circle + Arc logos in footer
-- Call-to-action box: "Live Demo: [deployment-url]" | "Code: [github-url]"
+- Call-to-action box: "Live Demo: [deployment-url]" | "Code: https://github.com/midasbal/GridMint"
 
 ---
 
@@ -241,7 +241,7 @@ Arc:       ▎ $0.0011  ← GridMint measured cost
 
 ## Reference Material
 
-**Project GitHub**: [To be added after deployment]  
+**Project GitHub**: https://github.com/midasbal/GridMint  
 **Live Demo**: [To be added after deployment]  
 **Video Presentation**: [To be added after recording]  
 
