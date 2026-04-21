@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useWindowWidth } from '../hooks/useWindowWidth'
 
-// Use environment variable for API URL in production, fallback to localhost in dev
-const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-const GATEWAY_API = 'http://localhost:4402'  // Circle Nanopayments server (@circle-fin/x402-batching)
+// Production API URLs (Railway backend)
+const API = import.meta.env.VITE_API_URL || 'https://gridmint-production.up.railway.app'
+const GATEWAY_API = 'https://gridmint-production.up.railway.app'  // Same backend handles all APIs
 const ARCSCAN = 'https://testnet.arcscan.app'
 const GATEWAY = '0x0077777d7EBA4688BDeF3E311b846F25870A19B9'
 
