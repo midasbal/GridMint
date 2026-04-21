@@ -11,7 +11,7 @@
   
   *A DePIN protocol for peer-to-peer energy trading with game-theoretic price discovery, cryptoeconomic futures markets, and sub-cent settlement via Circle Gateway on Arc blockchain.*
 
-  [Live Dashboard](http://localhost:5173/dashboard) • [Whitepaper](http://localhost:5173/whitepaper) • [API Docs](http://localhost:8000/docs)
+  [Live Demo](https://grid-mint.vercel.app/) • [Dashboard](https://grid-mint.vercel.app/dashboard) • [Whitepaper](https://grid-mint.vercel.app/whitepaper)
 
 </div>
 

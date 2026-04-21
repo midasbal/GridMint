@@ -18,6 +18,10 @@ nanopayments/dist/
 settlement_log.jsonl
 
 # Internal Documentation (not for public GitHub)
+presentation.md
+DEPLOYMENT_GUIDE.md
+DEPLOYMENT_CHECKLIST.md
+railway.json
 AUDIT_EXECUTIVE_SUMMARY.md
 CIRCLE_CONSOLE_CLARIFICATION.md
 CIRCLE_PRODUCT_FEEDBACK.md
