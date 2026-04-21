@@ -8,7 +8,7 @@ pydantic-settings==2.5.0
 
 # Blockchain / Arc / Circle
 web3==7.3.0
-eth-account==0.13.0
+eth-account>=0.13.1
 python-dotenv==1.0.1
 
 # Dashboard
