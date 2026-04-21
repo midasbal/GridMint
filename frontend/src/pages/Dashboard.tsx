@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useWindowWidth } from '../hooks/useWindowWidth'
 
-const API = 'http://localhost:8000'
+// Use environment variable for API URL in production, fallback to localhost in dev
+const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 const GATEWAY_API = 'http://localhost:4402'  // Circle Nanopayments server (@circle-fin/x402-batching)
 const ARCSCAN = 'https://testnet.arcscan.app'
 const GATEWAY = '0x0077777d7EBA4688BDeF3E311b846F25870A19B9'
@@ -331,7 +332,9 @@ export default function Dashboard() {
   useEffect(()=>{
     let ws:WebSocket, retryTimer:ReturnType<typeof setTimeout>
     const connect=()=>{
-      ws=new WebSocket('ws://localhost:8000/ws')
+      // Replace http/https with ws/wss for WebSocket protocol
+      const wsUrl = API.replace(/^http/, 'ws')
+      ws=new WebSocket(`${wsUrl}/ws`)
       ws.addEventListener('open',()=>setConnected(true))
       ws.addEventListener('close',()=>{setConnected(false);retryTimer=setTimeout(connect,3000)})
       ws.addEventListener('error',()=>ws.close())

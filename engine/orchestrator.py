@@ -511,6 +511,9 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        # Production Vercel domains (update after deployment)
+        "https://gridmint.vercel.app",
+        "https://gridmint-*.vercel.app",  # Preview deployments
     ],
     allow_credentials=False,
     allow_methods=["GET", "POST"],
