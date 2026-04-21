@@ -1,0 +1,27 @@
+# GridMint - DePIN Micro-Energy Settlement Protocol
+# Core
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+websockets==12.0
+pydantic==2.9.0
+pydantic-settings==2.5.0
+
+# Blockchain / Arc / Circle
+web3==7.3.0
+eth-account==0.13.0
+python-dotenv==1.0.1
+
+# Dashboard
+streamlit==1.38.0
+plotly==5.24.0
+
+# Simulation
+numpy==2.1.0
+
+# AI / Gemini (Google DeepMind Challenge)
+google-genai>=1.0.0
+
+# Testing
+pytest==8.3.0
+pytest-asyncio==0.24.0
+httpx==0.27.0

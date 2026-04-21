@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Grotesk:wght@400;600&display=swap');
+
+:root{
+  --bg:#061223;
+  --panel: rgba(255,255,255,0.02);
+  --glass: rgba(255,255,255,0.03);
+  --muted: rgba(230,238,246,0.68);
+  --accent-1: #6EE7F3;
+  --accent-2: #9B8CFF;
+  --radius:16px;
+  --glass-border: rgba(255,255,255,0.04);
+  --shadow: 0 10px 30px rgba(2,8,20,0.6);
+}
+
+/* Aggressively hide Streamlit chrome / branding so app feels bespoke */
+[data-testid='stHeader'], [data-testid='stToolbar'], .stApp > header, .css-18e3th9, footer, .reportview-container .main footer, .viewerBadge_container, .attribution {
+  display: none !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Also hide any link that contains 'streamlit' to avoid branding */
+a[href*="streamlit"] { display:none !important; }
+
+html, body, .stApp {
+  height: 100%;
+  background: radial-gradient(900px 360px at 6% 10%, rgba(107,179,255,0.02), transparent), linear-gradient(180deg,#041224 0%, #071022 100%);
+  color: #e6eef6;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Page shell */
+#gridmint-root{ max-width:1140px; margin: 28px auto; padding: 20px; }
+
+/* Hero */
+.hero-bg{
+  position: relative; display:flex; align-items:center; gap:28px; padding:28px; border-radius:18px; overflow:hidden; box-shadow:var(--shadow);
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border:1px solid var(--glass-border);
+}
+.hero-bg svg{ position:absolute; inset:0; width:100%; height:100%; opacity:0.98; pointer-events:none; filter: drop-shadow(0 30px 60px rgba(3,10,20,0.5)); }
+
+.hero-content{ position:relative; z-index:4; max-width:720px; }
+.hero-title{ font-family:'Space Grotesk', 'Inter', sans-serif; font-size: clamp(28px, 3.4vw, 42px); margin:0 0 6px; color:#fff; letter-spacing:-0.02em; }
+.hero-subtitle{ color:var(--muted); margin:0 0 18px; font-size:16px; }
+
+.cta-btn{ display:inline-block; background: linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:#02161a; padding:12px 20px; border-radius:12px; border:none; cursor:pointer; font-weight:700; box-shadow: 0 14px 40px rgba(110,231,243,0.08); transition: transform 180ms ease, box-shadow 180ms ease; }
+.cta-btn:hover{ transform: translateY(-4px); box-shadow: 0 20px 60px rgba(110,231,243,0.12); }
+
+/* Subtle glass card on the right */
+.hero-aside{ margin-left:auto; display:flex; gap:12px; align-items:center; }
+.hero-aside .mini-card{ background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); padding:12px 16px; border-radius:12px; border:1px solid var(--glass-border); min-width:140px; text-align:center; }
+.hero-aside h3{ margin:0; font-size:13px; color:var(--muted); }
+.hero-aside p{ margin:6px 0 0; font-size:18px; color:#fff; }
+
+/* Content body uses grid layout to prevent collapse */
+.content-wrapper{ display:grid; grid-template-columns: 1fr; gap:18px; margin-top:18px; }
+.narrative-section{ display:flex; gap:18px; align-items:center; padding:18px; border-radius:12px; background: rgba(255,255,255,0.01); border:1px solid var(--glass-border); backdrop-filter: blur(6px); }
+.narrative-section .icon{ width:72px; height:72px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.narrative-section h2{ margin:0 0 6px; font-size:18px; color:#fff; }
+.narrative-section p{ margin:0; color:var(--muted); font-size:14px; }
+
+/* Dashboard */
+.dashboard-title{ font-size:22px; color:#fff; margin-bottom:12px; }
+.metrics-grid{ display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:14px; }
+.metric-card{ background: rgba(255,255,255,0.02); padding:12px; border-radius:12px; border:1px solid var(--glass-border); }
+.metric-card h4{ margin:0; font-size:13px; color:var(--muted); }
+.metric-card p{ margin:6px 0 0; font-size:18px; color:#fff; }
+
+/* Utility */
+.fade-up{ opacity:0; transform: translateY(14px); transition: opacity 600ms cubic-bezier(.2,.9,.2,1), transform 600ms cubic-bezier(.2,.9,.2,1); }
+.fade-up.visible{ opacity:1; transform: translateY(0); }
+
+/* Responsive adjustments */
+@media (min-width: 1000px){ .content-wrapper{ grid-template-columns: 1fr 380px; } }
+@media (max-width: 800px){ .hero-bg{ flex-direction:column; align-items:flex-start; } .hero-aside{ width:100%; display:flex; justify-content:space-between; } }
+
+/* Final polish to hide any left-over Streamlit controls */
+[data-testid='stSidebar'], .stSidebar, .st-bf, .css-1v3fvcr, .css-1lsmgbg, .css-1aumxhk { display:none !important; }
+
+/* Accessibility */
+.cta-btn:focus{ outline: 3px solid rgba(110,231,243,0.12); }
+
+/* Small footer */
+.site-footer{ color:var(--muted); font-size:13px; margin-top:6px; }
