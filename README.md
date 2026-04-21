@@ -610,13 +610,13 @@ Contributions are welcome! Please follow these guidelines:
 
 ## 📝 License
 
-This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
+This project is licensed under the **MIT License**.
 
 ---
 
 ## 🏆 Acknowledgments
 
-Built for the **Circle x Arc Hackathon 2026**
+**Agentic Economy on Arc**
 
 **Technologies Used**:
 - **Circle Nanopayments** for gasless USDC settlement
@@ -629,15 +629,6 @@ Built for the **Circle x Arc Hackathon 2026**
 - Circle team for Gateway SDK support
 - Arc Network for testnet infrastructure
 - Google AI for Gemini API access
-
----
-
-## 📞 Contact
-
-**Project Maintainer**: Your Name  
-**Email**: your.email@example.com  
-**Twitter**: [@yourusername](https://twitter.com/yourusername)  
-**GitHub**: [@yourusername](https://github.com/yourusername)
 
 ---
 
