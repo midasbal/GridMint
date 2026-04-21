@@ -295,7 +295,7 @@ const FAQSection = () => {
             </a>
           ))}
         </div>
-        <div style={{fontSize:10,color:C.dimmer}}>Built for Arc Hackathon 2026</div>
+        <div style={{fontSize:10,color:C.dimmer}}>Agentic Economy on Arc</div>
       </div>
     </div>
   )
