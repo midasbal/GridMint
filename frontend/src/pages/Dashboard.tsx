@@ -364,6 +364,7 @@ export default function Dashboard() {
             if(narrative){prevNarrative.current=narrative;setGeminiRateLimited(false)}
             if(msg.coalitions)setCoalitions((p:any)=>({...(p??{}),stats:msg.coalitions}))
             if(msg.futures)setFutures((p:any)=>({...(p??{}),stats:msg.futures}))
+            if(msg.certificates)setCerts((p:any)=>({...(p??{}),stats:msg.certificates}))
           }
         }catch{}
       })
