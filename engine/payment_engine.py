@@ -260,18 +260,19 @@ class ArcSettler(BaseSettler):
             # Gas price on Arc Testnet is typically 0.00001 gwei = 10,000 wei = 0.00000000001 USDC
             # For a 65,000 gas transaction: 65,000 × 10,000 wei = 650,000,000 wei = 0.00065 USDC
             # 
-            # Reality check: Arc gas should be ~$0.0001-0.001 per tx, not $0.10+
+            # Reality check: Arc gas should be ~$0.0001 per tx (10x cheaper than expected)
             gas_cost_usd = gas_cost_wei / 10**18  # Convert wei to native token units
             
-            # Additional safety check: if gas cost seems too high (>$0.01), cap it
-            # This prevents display bugs from inflated gas estimations
-            if gas_cost_usd > 0.01:
+            # CRITICAL FIX: Cap at $0.0001 per tx (not $0.001)
+            # Arc Testnet actual gas is ~$0.00001-0.0001 per ERC-20 transfer
+            # Anything above $0.0001 indicates RPC gas price estimation issues
+            if gas_cost_usd > 0.0001:
                 logger.warning(
-                    "Arc gas cost suspiciously high: $%.6f (capping to $0.001 for display). "
-                    "Check if RPC is returning accurate gas price.",
+                    "Arc gas cost suspiciously high: $%.8f (capping to $0.0001 for accuracy). "
+                    "Actual Arc gas should be ~$0.00001-0.0001 per transaction.",
                     gas_cost_usd
                 )
-                gas_cost_usd = 0.001
+                gas_cost_usd = 0.0001
 
             result = PaymentResult(
                 trade=trade,
