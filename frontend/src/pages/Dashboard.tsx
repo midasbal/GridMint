@@ -548,7 +548,7 @@ export default function Dashboard() {
             value={<Flip v={txCount} color={C.cyan} size={28}/>}
             sub={txCount>=50?'✅ 50+ target met':`${Math.max(0,50-txCount)} to 50+ target`}/>
           <KPI label="Clearing Price" tooltip="The market-clearing price per kilowatt-hour in USDC, determined by matching buy and sell orders from all agents each tick. Shows $0.0000 during nighttime hours (8 PM - 6 AM) when no trades occur."
-            value={<Flip v={`$${(data.clearing_price??0).toFixed(4)}`} size={22}/>}
+            value={<Flip v={`$${(data.clearing_price_usd??0).toFixed(4)}`} size={22}/>}
             sub={data.sim_hour<6||data.sim_hour>20?'🌙 Night (no solar)':'☀️ Daytime'}/>
           <KPI label="Total Settled" accent={C.green} tooltip="The total dollar value of USDC transferred between wallets on the Arc blockchain. This is real money moving on-chain."
             value={<Flip v={`$${(payments.total_settled_usd??0).toFixed(5)}`} color={C.green} size={20}/>}
