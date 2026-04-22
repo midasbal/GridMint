@@ -119,9 +119,15 @@ class GridEngine:
             offer = agent.get_offer(self.tick, self.sim_hour)
             if offer:
                 offers.append(offer)
+                # DEBUG: Log solar offers
+                if agent.agent_type.value == "solar":
+                    logger.info(f"SOLAR OFFER: {agent.agent_id} offering {offer.amount_kwh:.4f} kWh @ ${offer.price_usd_per_kwh:.6f} (tick {self.tick}, hour {self.sim_hour:.2f})")
             demand = agent.get_demand(self.tick, self.sim_hour)
             if demand:
                 demands.append(demand)
+        # DEBUG: Log total counts
+        solar_offers = [o for o in offers if self.agents[o.agent_id].agent_type.value == "solar"]
+        logger.info(f"Tick {self.tick}: {len(solar_offers)} solar offers, {len(offers)} total offers, {len(demands)} demands")
         return offers, demands
 
     def _apply_trades(self, matches: list[TradeMatch]) -> None:
