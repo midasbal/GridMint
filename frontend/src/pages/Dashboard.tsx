@@ -200,10 +200,25 @@ const TradeRow = ({t,i}:{t:any;i:number}) => {
       <div style={{fontSize:11,color:C.text,fontFamily:'monospace'}}>{(t.amount_kwh??0).toFixed(3)}</div>
       <div style={{fontSize:11,color:C.green,fontFamily:'monospace'}}>${(t.total_usd??0).toFixed(5)}</div>
       {isReal
-        ?<a href={`${ARCSCAN}/tx/${hash}`} target="_blank" rel="noreferrer"
-            style={{fontSize:10,color:C.cyan,textDecoration:'none',fontFamily:'monospace'}} title={hash}>
+        ?<motion.a 
+            href={`${ARCSCAN}/tx/${hash}`} 
+            target="_blank" 
+            rel="noreferrer"
+            whileHover={{scale:1.05,textShadow:`0 0 8px ${C.cyan}`}}
+            whileTap={{scale:0.95}}
+            style={{
+              fontSize:10,
+              color:C.cyan,
+              textDecoration:'underline',
+              textDecorationStyle:'dotted',
+              fontFamily:'monospace',
+              fontWeight:600,
+              cursor:'pointer',
+              transition:'all 0.2s ease'
+            }} 
+            title={`Click to view on ArcScan: ${hash}`}>
             {hash!.slice(0,6)}…{hash!.slice(-4)} ↗
-          </a>
+          </motion.a>
         :<span style={{fontSize:10,color:C.dimmer,fontFamily:'monospace'}}>{hash?hash.slice(0,10):'—'}</span>
       }
     </motion.div>
@@ -602,9 +617,13 @@ export default function Dashboard() {
                 </a>
               }>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 55px 72px 92px',gap:4,marginBottom:5}}>
-                {['Seller','Buyer','kWh','USDC','Hash'].map(h=>(
+                {['Seller','Buyer','kWh','USDC'].map(h=>(
                   <div key={h} style={{fontSize:9,color:C.dimmer,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.07em'}}>{h}</div>
                 ))}
+                <div style={{fontSize:9,color:C.cyan,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.07em',display:'flex',alignItems:'center',gap:2}}>
+                  Hash ↗
+                  <span style={{fontSize:8,color:C.cyan,opacity:0.6}}>(click)</span>
+                </div>
               </div>
               <div style={{maxHeight:230,overflowY:'auto'}}>
                 <AnimatePresence>
