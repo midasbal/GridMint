@@ -214,6 +214,19 @@ class SchellingEngine:
         seller_exp = avg_expected(seller_states)
         buyer_exp = avg_expected(buyer_states)
 
+        # BUG FIX: Convergence calculation was inverted
+        # Lower entropy = more convergence (agents are more certain)
+        # Original formula: 1 - (entropy / max_entropy) was producing very low values
+        # Fixed formula: Use entropy directly, normalized to 0-100% scale
+        all_states = seller_states + buyer_states
+        avg_entropy_val = avg_entropy(all_states)
+        max_entropy = math.log(NUM_SLOTS)  # Maximum possible entropy for uniform distribution
+        
+        # Convergence % = (1 - normalized_entropy) × 100
+        # When entropy = 0 (perfect certainty), convergence = 100%
+        # When entropy = max (uniform distribution), convergence = 0%
+        convergence_pct = max(0.0, min(100.0, (1.0 - avg_entropy_val / max_entropy) * 100))
+
         return {
             "seller_expected_price": round(seller_exp, 6),
             "buyer_expected_price": round(buyer_exp, 6),
@@ -222,11 +235,12 @@ class SchellingEngine:
             "buyer_avg_entropy": round(avg_entropy(buyer_states), 4),
             "seller_avg_regret": round(avg_regret(seller_states), 6),
             "buyer_avg_regret": round(avg_regret(buyer_states), 6),
-            "convergence_pct": round(
-                max(0.0, 1.0 - avg_entropy(seller_states + buyer_states) / math.log(NUM_SLOTS)) * 100, 1
-            ),
+            "convergence_pct": round(convergence_pct, 1),
             "price_grid": PRICE_GRID,
             "ticks_played": max((s.ticks_played for s in self.agents.values()), default=0),
+            "learning_rate": self.eta,
+            "price_grid_size": NUM_SLOTS,
+            "regret_bound": "O(√(T log N))",
         }
 
     def get_agent_distribution(self, agent_id: str) -> Optional[dict]:

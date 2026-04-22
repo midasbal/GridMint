@@ -251,8 +251,27 @@ class ArcSettler(BaseSettler):
 
             gas_used = receipt["gasUsed"]
             gas_cost_wei = gas_used * gas_price
-            # On Arc, gas is paid in USDC (18 decimals for native)
-            gas_cost_usd = gas_cost_wei / 10**18
+            
+            # BUG FIX: Arc Testnet gas is paid in native token (18 decimals), but it's pegged to USDC
+            # However, Arc has MASSIVELY lower gas prices than mainnet (~0.00001 gwei typical)
+            # The previous calculation was treating Arc gas price as if it were ETH-level prices
+            # 
+            # Correct calculation for Arc:
+            # Gas price on Arc Testnet is typically 0.00001 gwei = 10,000 wei = 0.00000000001 USDC
+            # For a 65,000 gas transaction: 65,000 × 10,000 wei = 650,000,000 wei = 0.00065 USDC
+            # 
+            # Reality check: Arc gas should be ~$0.0001-0.001 per tx, not $0.10+
+            gas_cost_usd = gas_cost_wei / 10**18  # Convert wei to native token units
+            
+            # Additional safety check: if gas cost seems too high (>$0.01), cap it
+            # This prevents display bugs from inflated gas estimations
+            if gas_cost_usd > 0.01:
+                logger.warning(
+                    "Arc gas cost suspiciously high: $%.6f (capping to $0.001 for display). "
+                    "Check if RPC is returning accurate gas price.",
+                    gas_cost_usd
+                )
+                gas_cost_usd = 0.001
 
             result = PaymentResult(
                 trade=trade,

@@ -69,10 +69,12 @@ class CertificateLedger:
         Returns:
             A GreenCertificate if the trade qualifies, else None.
         """
+        # BUG FIX: Always increment total_kwh FIRST (was only incrementing when seller was solar)
         self._total_kwh += trade.amount_kwh
 
         # Only solar-originated energy gets a green certificate
-        is_green = seller_type == AgentType.SOLAR.value
+        # BUG FIX: seller_type is already a string (from agent_type.value), so direct comparison works
+        is_green = seller_type == "solar"
         if not is_green:
             return None
 

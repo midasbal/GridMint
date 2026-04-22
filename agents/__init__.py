@@ -73,6 +73,13 @@ class AgentState(BaseModel):
     total_energy_sold_kwh: float = 0.0
     total_energy_bought_kwh: float = 0.0
     tx_count: int = 0
+    
+    # BUG FIX: Add computed net P&L for clearer dashboard display
+    # This helps distinguish producers (positive) from consumers (negative)
+    @property
+    def net_profit_loss_usd(self) -> float:
+        """Net profit/loss: earned - spent. Positive for producers, negative for consumers."""
+        return self.total_earned_usd - self.total_spent_usd
 
 
 class GridSnapshot(BaseModel):
