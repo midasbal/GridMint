@@ -207,12 +207,26 @@ class CoalitionEngine:
         avg_members = (
             sum(len(c.members) for c in self.historical_coalitions) / max(total_formed, 1)
         )
+        # BUGFIX: active count cannot exceed total formed count
+        # Ensure active_coalitions only contains coalitions from this tick cycle
+        active_count = len(self.active_coalitions)
+        # Validation: active count should never exceed total formed
+        if active_count > total_formed:
+            logger.warning(
+                "Coalition state inconsistency detected: %d active > %d formed. "
+                "Clearing stale active_coalitions.",
+                active_count, total_formed
+            )
+            # Clear stale active coalitions - they should have been archived
+            self.active_coalitions.clear()
+            active_count = 0
+        
         return {
             "total_formed": total_formed,
             "total_dispatchable": total_dispatchable,
             "total_revenue_usd": round(total_revenue, 8),
             "avg_members": round(avg_members, 1),
-            "active": len(self.active_coalitions),
+            "active": active_count,
             "premium_factor": DISPATCHABILITY_PREMIUM,
         }
 
