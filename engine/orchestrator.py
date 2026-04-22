@@ -537,6 +537,7 @@ async def get_status():
             "settler_class": type(payments.settler).__name__,
             "settler_stats": payments.settler.stats if hasattr(payments.settler, "stats") else {},
         }
+    certificates_stats = engine.certificates.stats if engine else {}
     return {
         "running": engine.running if engine else False,
         "tick": engine.tick if engine else 0,
@@ -545,6 +546,7 @@ async def get_status():
         "total_usd_settled": round(engine.total_usd_settled, 8) if engine else 0,
         "clearing_price_usd": engine.clearing_price if engine else 0,
         "agent_count": len(engine.agents) if engine else 0,
+        "green_energy_pct": certificates_stats.get("green_percentage", 0.0),
         "payments": payments.stats if payments else {},
         "settlement_mode": os.getenv("SETTLEMENT_MODE", "simulated").strip().lower(),
         **settler_info,
