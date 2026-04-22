@@ -220,6 +220,7 @@ class CoalitionEngine:
         self,
         agents: dict,
         tick: int,
+        sim_hour: float,
         clearing_price: float,
     ) -> list[Coalition]:
         """Identify and form profitable coalitions from current agent set.
@@ -250,8 +251,9 @@ class CoalitionEngine:
         used_batteries = set()
 
         for solar in solar_agents:
-            # Get solar's current production
-            solar_kwh = getattr(solar, "_last_production_kwh", 0.0)
+            # BUGFIX: Get solar's current production by calling _production_kwh() method
+            # Previously used getattr(solar, "_last_production_kwh", 0.0) which doesn't exist
+            solar_kwh = solar._production_kwh(sim_hour) if hasattr(solar, "_production_kwh") else 0.0
             if solar_kwh <= 0.001:
                 continue
 

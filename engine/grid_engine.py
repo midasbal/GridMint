@@ -229,7 +229,7 @@ class GridEngine:
 
         # 6b. Coalition formation: pair solar + battery into virtual power plants
         formed_coalitions = self.coalitions.form_coalitions(
-            self.agents, self.tick, clearing_price if clearing_price > 0 else self.oracle.price_ewma,
+            self.agents, self.tick, self.sim_hour, clearing_price if clearing_price > 0 else self.oracle.price_ewma,
         )
 
         # 6c. Futures: auto-create contracts for solar agents with good track records
