@@ -562,6 +562,48 @@ async def get_agents():
     ]
 
 
+@app.get("/api/offers-demands")
+async def get_offers_demands():
+    """DEBUG: Get current offers and demands for diagnosing market clearing issues."""
+    if not engine:
+        return {"error": "Engine not initialized"}
+    
+    # Collect current offers and demands
+    offers = []
+    demands = []
+    for agent in engine.agents.values():
+        offer = agent.get_offer(engine.tick, engine.sim_hour)
+        if offer:
+            offers.append({
+                "agent_id": offer.agent_id,
+                "agent_type": agent.agent_type.value,
+                "amount_kwh": offer.amount_kwh,
+                "price_usd_per_kwh": offer.price_usd_per_kwh,
+            })
+        demand = agent.get_demand(engine.tick, engine.sim_hour)
+        if demand:
+            demands.append({
+                "agent_id": demand.agent_id,
+                "agent_type": agent.agent_type.value,
+                "amount_kwh": demand.amount_kwh,
+                "max_price_usd_per_kwh": demand.max_price_usd_per_kwh,
+            })
+    
+    solar_offers = [o for o in offers if o["agent_type"] == "solar"]
+    battery_offers = [o for o in offers if o["agent_type"] == "battery"]
+    
+    return {
+        "tick": engine.tick,
+        "sim_hour": round(engine.sim_hour % 24.0, 2),
+        "total_offers": len(offers),
+        "total_demands": len(demands),
+        "solar_offers": len(solar_offers),
+        "battery_offers": len(battery_offers),
+        "offers": offers,
+        "demands": demands,
+    }
+
+
 @app.get("/api/snapshots")
 async def get_snapshots(limit: int = 20):
     """Get recent grid snapshots."""
