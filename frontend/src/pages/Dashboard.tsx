@@ -160,8 +160,21 @@ const AgentChip = ({agent,balance,balanceSource}:{agent:any;balance?:number|null
           style={{height:'100%',background:`linear-gradient(90deg,${color},${color}80)`,borderRadius:2}} />
       </div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:2}}>
-        <div style={{fontSize:10,color:C.dimmer}}>Earned</div>
-        <div style={{fontSize:10,color:C.green,fontWeight:600}}>${(agent.total_earned_usd??0).toFixed(4)}</div>
+        {agent.agent_type === 'consumer' ? (
+          <>
+            <div style={{fontSize:10,color:C.dimmer}}>Spent</div>
+            <div style={{fontSize:10,color:C.red,fontWeight:600}}>${(agent.total_spent_usd??0).toFixed(4)}</div>
+          </>
+        ) : (
+          <>
+            <div style={{fontSize:10,color:C.dimmer}}>Earned</div>
+            <div style={{fontSize:10,color:C.green,fontWeight:600}}>${(agent.total_earned_usd??0).toFixed(4)}</div>
+          </>
+        )}
+        <div style={{fontSize:10,color:C.dimmer}}>Net P&L</div>
+        <div style={{fontSize:10,color:(agent.total_earned_usd??0)-(agent.total_spent_usd??0)>=0?C.green:C.red,fontWeight:600}}>
+          ${((agent.total_earned_usd??0)-(agent.total_spent_usd??0)).toFixed(4)}
+        </div>
         <div style={{fontSize:10,color:C.dimmer}}>Trades</div>
         <div style={{fontSize:10,color:C.text}}>{agent.tx_count??0}</div>
         {balance!=null&&<>
