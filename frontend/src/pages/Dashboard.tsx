@@ -390,7 +390,21 @@ export default function Dashboard() {
         setTrades(tr.data?.recent??[])
         setRunning(st.data?.running??false)
         setSettlementMode(st.data?.settlement_mode??'simulated')
-        if(ep.data&&ep.data.total_transactions!==undefined)setEconomicProof(ep.data)
+        
+        // BUGFIX: If economic-proof is unavailable (paywalled), synthesize from /api/status
+        // This ensures Green Energy % always displays even if x402 blocks the request
+        if(ep.data&&ep.data.total_transactions!==undefined){
+          setEconomicProof(ep.data)
+        }else if(st.data&&st.data.total_tx_count!==undefined){
+          // Fallback: construct minimal economicProof from /api/status
+          setEconomicProof({
+            total_transactions:st.data.total_tx_count,
+            total_usd_settled:st.data.total_usd_settled,
+            green_energy_pct:st.data.green_energy_pct??0,
+            clearing_price_usd:st.data.clearing_price_usd??0,
+          })
+        }
+        
         if(ce.data&&ce.data.stats)setCerts(ce.data)
         if(x4.data)setX402(x4.data)
         if(co.data)setCoalitions(co.data)
@@ -533,9 +547,9 @@ export default function Dashboard() {
           <KPI label="On-Chain Txns" accent={C.cyan} tooltip="Total number of energy trades settled as real USDC transactions on the Arc blockchain. Target: 50+ to prove the system works at scale."
             value={<Flip v={txCount} color={C.cyan} size={28}/>}
             sub={txCount>=50?'✅ 50+ target met':`${Math.max(0,50-txCount)} to 50+ target`}/>
-          <KPI label="Clearing Price" tooltip="The market-clearing price per kilowatt-hour in USDC, determined by matching buy and sell orders from all agents each tick."
+          <KPI label="Clearing Price" tooltip="The market-clearing price per kilowatt-hour in USDC, determined by matching buy and sell orders from all agents each tick. Shows $0.0000 during nighttime hours (8 PM - 6 AM) when no trades occur."
             value={<Flip v={`$${(data.clearing_price??0).toFixed(4)}`} size={22}/>}
-            sub="per kWh · USDC"/>
+            sub={data.sim_hour<6||data.sim_hour>20?'🌙 Night (no solar)':'☀️ Daytime'}/>
           <KPI label="Total Settled" accent={C.green} tooltip="The total dollar value of USDC transferred between wallets on the Arc blockchain. This is real money moving on-chain."
             value={<Flip v={`$${(payments.total_settled_usd??0).toFixed(5)}`} color={C.green} size={20}/>}
             sub="USDC on Arc"/>

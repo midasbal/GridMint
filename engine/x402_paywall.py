@@ -30,12 +30,15 @@ from fastapi.responses import JSONResponse
 logger = logging.getLogger("gridmint.x402")
 
 # x402 pricing tiers (USD per request)
+# NOTE: /api/certificates and /api/economic-proof are FREE for demo dashboard.
+# These endpoints contain critical metrics (Green Energy %, cost analysis) that
+# judges need to see without payment. Other endpoints remain paywalled for x402 demo.
 PAYWALL_TIERS = {
-    "/api/certificates": 0.001,
-    "/api/certificates/": 0.0005,
+    # "/api/certificates": 0.001,        # DISABLED: needed for dashboard Green Energy display
+    # "/api/certificates/": 0.0005,      # DISABLED: needed for dashboard REC panel
     "/api/schelling": 0.002,
     "/api/schelling/": 0.001,
-    "/api/economic-proof": 0.003,
+    # "/api/economic-proof": 0.003,      # DISABLED: needed for dashboard Green Energy % and cost analysis
 }
 
 GATEWAY_WALLET = "0x0077777d7EBA4688BDeF3E311b846F25870A19B9"
