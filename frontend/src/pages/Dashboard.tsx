@@ -865,7 +865,7 @@ export default function Dashboard() {
             {certs?.stats?(
               <>
                 <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:10}}>
-                  {[{l:'RECs',v:String(certs.stats.total_certificates??0),c:C.green},{l:'kWh',v:`${(certs.stats.total_kwh_certified??0).toFixed(1)}`,c:C.cyan},{l:'Green%',v:`${certs.stats.green_percentage??0}%`,c:C.green},{l:'Sources',v:String(certs.stats.unique_sources??0),c:C.purple}].map((s,i)=>(
+                  {[{l:'RECs',v:String(certs.stats.total_certificates??0),c:C.green},{l:'kWh',v:`${(certs.stats.total_green_kwh??0).toFixed(1)}`,c:C.cyan},{l:'Green%',v:`${certs.stats.green_percentage??0}%`,c:C.green},{l:'Buyers',v:String(certs.stats.unique_buyers??0),c:C.purple}].map((s,i)=>(
                     <div key={i} style={{background:'rgba(0,0,0,0.2)',borderRadius:9,padding:'9px 11px',textAlign:'center'}}>
                       <div style={{fontSize:16,fontWeight:700,color:s.c,fontFamily:"'Space Grotesk',ui-sans-serif"}}>{s.v}</div>
                       <div style={{fontSize:9,color:C.dimmer,marginTop:2,textTransform:'uppercase',letterSpacing:'0.05em'}}>{s.l}</div>
