@@ -190,7 +190,12 @@ const AgentChip = ({agent,balance,balanceSource}:{agent:any;balance?:number|null
 
 const TradeRow = ({t,i}:{t:any;i:number}) => {
   const hash=t.tx_hash as string|undefined
-  const isReal=hash&&hash!=='None'&&hash.startsWith('0x')&&hash.length===66
+  // Accept both 0x-prefixed (66 chars) and non-prefixed hashes (any length > 10)
+  const hasHash = hash && hash !== 'None' && hash.length > 10
+  const isRealOnchain = hash && hash.startsWith('0x') && hash.length === 66
+  // Normalize hash for ArcScan URL (ensure 0x prefix)
+  const normalizedHash = isRealOnchain ? hash : (hash && hash.length > 10 ? `0x${hash}` : null)
+  
   return(
     <motion.div layout initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} exit={{opacity:0}}
       transition={{delay:i*0.025}}
@@ -199,16 +204,16 @@ const TradeRow = ({t,i}:{t:any;i:number}) => {
       <div style={{fontSize:11,color:C.purple}}>{t.buyer}</div>
       <div style={{fontSize:11,color:C.text,fontFamily:'monospace'}}>{(t.amount_kwh??0).toFixed(3)}</div>
       <div style={{fontSize:11,color:C.green,fontFamily:'monospace'}}>${(t.total_usd??0).toFixed(5)}</div>
-      {isReal
+      {hasHash && normalizedHash
         ?<motion.a 
-            href={`${ARCSCAN}/tx/${hash}`} 
+            href={`${ARCSCAN}/tx/${normalizedHash}`} 
             target="_blank" 
             rel="noreferrer"
             whileHover={{scale:1.05,textShadow:`0 0 8px ${C.cyan}`}}
             whileTap={{scale:0.95}}
             style={{
               fontSize:10,
-              color:C.cyan,
+              color:isRealOnchain ? C.cyan : C.yellow,
               textDecoration:'underline',
               textDecorationStyle:'dotted',
               fontFamily:'monospace',
@@ -216,10 +221,10 @@ const TradeRow = ({t,i}:{t:any;i:number}) => {
               cursor:'pointer',
               transition:'all 0.2s ease'
             }} 
-            title={`Click to view on ArcScan: ${hash}`}>
-            {hash!.slice(0,6)}…{hash!.slice(-4)} ↗
+            title={`Click to view on ArcScan: ${normalizedHash}`}>
+            {hash!.slice(0,6)}…{hash!.slice(-4)}
           </motion.a>
-        :<span style={{fontSize:10,color:C.dimmer,fontFamily:'monospace'}}>{hash?hash.slice(0,10):'—'}</span>
+        :<span style={{fontSize:10,color:C.dimmer,fontFamily:'monospace'}}>—</span>
       }
     </motion.div>
   )
@@ -617,13 +622,9 @@ export default function Dashboard() {
                 </a>
               }>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 55px 72px 92px',gap:4,marginBottom:5}}>
-                {['Seller','Buyer','kWh','USDC'].map(h=>(
+                {['Seller','Buyer','kWh','USDC','Hash'].map(h=>(
                   <div key={h} style={{fontSize:9,color:C.dimmer,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.07em'}}>{h}</div>
                 ))}
-                <div style={{fontSize:9,color:C.cyan,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.07em',display:'flex',alignItems:'center',gap:2}}>
-                  Hash ↗
-                  <span style={{fontSize:8,color:C.cyan,opacity:0.6}}>(click)</span>
-                </div>
               </div>
               <div style={{maxHeight:230,overflowY:'auto'}}>
                 <AnimatePresence>
