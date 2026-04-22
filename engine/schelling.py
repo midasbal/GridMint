@@ -1,7 +1,19 @@
 """Schelling Point Discovery via Multiplicative Weights Update (MWU).
 
 Each agent maintains a probability distribution over a discretized price grid.
-After each tick, agents observe whether they were matched at their chosen price
+After each tick, agents o        # MWU update: log_w(t+1) = log_w(t) + eta * reward
+        # PERFORMANCE FIX: Apply stronger learning signal to accelerate convergence
+        # Original eta is good for theory, but we multiply by 2.0 for faster demo convergence
+        effective_eta = self.eta * 2.0  # Double learning rate for visual impact
+        for i in range(NUM_SLOTS):
+            state.log_weights[i] += effective_eta * rewards[i]
+            # Track per-slot cumulative for best-fixed-action regret
+            self._per_slot_rewards[agent_id][i] += rewards[i]
+
+        # Track chosen slot and actual reward for that slot
+        actual_reward = rewards[state.last_chosen_slot]
+        state.last_reward = actual_reward
+        state.cumulative_reward += actual_rewardther they were matched at their chosen price
 and shift weight toward prices that yielded successful trades.
 
 This implements online convex optimization with logarithmic regret:
