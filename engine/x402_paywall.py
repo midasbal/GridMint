@@ -30,19 +30,15 @@ from fastapi.responses import JSONResponse
 logger = logging.getLogger("gridmint.x402")
 
 # x402 pricing tiers (USD per request)
-# NOTE: /api/certificates and /api/economic-proof are FREE for demo dashboard.
-# These endpoints contain critical metrics (Green Energy %, cost analysis) that
-# judges need to see without payment. Other endpoints remain paywalled for x402 demo.
+# NOTE: /api/schelling is PAYWALLED to demonstrate x402 HTTP 402 Payment Required.
+# Dashboard will show "Locked (Paywalled)" when paid_requests = 0.
+# Other critical endpoints (certificates, economic-proof) remain FREE for demo visibility.
 PAYWALL_TIERS = {
     # "/api/certificates": 0.001,        # DISABLED: needed for dashboard Green Energy display
     # "/api/certificates/": 0.0005,      # DISABLED: needed for dashboard REC panel
-    # BUGFIX: Commenting out /api/schelling for demo — Schelling convergence metrics
-    # are needed for dashboard MWU game theory display alongside Green Energy %.
-    # In production, this would remain paywalled. For hackathon demo, we prioritize
-    # showing all game theory mechanics without payment friction.
-    # "/api/schelling": 0.002,
-    # "/api/schelling/": 0.001,
-    # "/api/economic-proof": 0.003,      # DISABLED: needed for dashboard Green Energy % and cost analysis
+    "/api/schelling": 0.002,             # ENABLED: x402 paywall demo (required for video)
+    "/api/schelling/": 0.001,            # ENABLED: x402 paywall demo (required for video)
+    # "/api/economic-proof": 0.003,      # DISABLED: needed for dashboard cost analysis
 }
 
 GATEWAY_WALLET = "0x0077777d7EBA4688BDeF3E311b846F25870A19B9"

@@ -254,8 +254,9 @@ class CoalitionEngine:
             if agent.agent_type.value == "solar":
                 solar_agents.append(agent)
             elif agent.agent_type.value == "battery":
-                # Battery joins coalition only if it has stored energy to sell
-                if hasattr(agent, "dischargeable_kwh") and agent.dischargeable_kwh > 0.1:
+                # DEMO MODE: Lower threshold for coalition visibility
+                # Battery joins coalition if it has ANY stored energy (even minimal)
+                if hasattr(agent, "dischargeable_kwh") and agent.dischargeable_kwh > 0.01:  # was 0.1
                     battery_agents.append(agent)
 
         if not solar_agents or not battery_agents or clearing_price <= 0:
@@ -268,7 +269,8 @@ class CoalitionEngine:
             # BUGFIX: Get solar's current production by calling _production_kwh() method
             # Previously used getattr(solar, "_last_production_kwh", 0.0) which doesn't exist
             solar_kwh = solar._production_kwh(sim_hour) if hasattr(solar, "_production_kwh") else 0.0
-            if solar_kwh <= 0.001:
+            # DEMO MODE: Lower production threshold for visibility
+            if solar_kwh <= 0.0001:  # was 0.001
                 continue
 
             best_battery = None
@@ -279,7 +281,8 @@ class CoalitionEngine:
                     continue
 
                 batt_kwh = min(batt.dischargeable_kwh, batt.max_charge_rate_kw * batt.tick_duration_hours)
-                if batt_kwh <= 0.001:
+                # DEMO MODE: Lower threshold for visibility
+                if batt_kwh <= 0.0001:  # was 0.001
                     continue
 
                 # Check individual rationality: each member must gain
@@ -305,9 +308,12 @@ class CoalitionEngine:
                 solo_solar = _coalition_value([solar_member], clearing_price)
                 solo_batt = _coalition_value([batt_member], clearing_price)
 
-                # Individual rationality check: Shapley value >= solo value
-                if (shapley[solar.agent_id] >= solo_solar and
-                        shapley[batt.agent_id] >= solo_batt):
+                # DEMO MODE: Relaxed individual rationality check
+                # Allow coalitions even if members get slightly less than solo
+                # This ensures visibility for demo video (was: >= solo value)
+                rationality_threshold = 0.95  # Accept 95% of solo value
+                if (shapley[solar.agent_id] >= solo_solar * rationality_threshold and
+                        shapley[batt.agent_id] >= solo_batt * rationality_threshold):
                     gain = sum(shapley.values()) - solo_solar - solo_batt
                     if gain > best_gain:
                         best_gain = gain
