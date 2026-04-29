@@ -4,6 +4,9 @@
   # GridMint
   
   **Autonomous Micro-Energy Settlement Protocol**
+
+  # shutting this down. built it for a hackathon, no real future for it. maybe later
+
   
   [![Arc Testnet](https://img.shields.io/badge/Arc-Testnet-6EE7F3?style=for-the-badge)](https://testnet.arcscan.app)
   [![Circle](https://img.shields.io/badge/Circle-Nanopayments-00C7B7?style=for-the-badge)](https://developers.circle.com/gateway/nanopayments)
